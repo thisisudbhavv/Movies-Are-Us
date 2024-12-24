@@ -7,6 +7,8 @@ import getPatrons from '@salesforce/apex/PatronController.getPatrons';
 
 import createTransaction from '@salesforce/apex/TransactionController.createTransaction';
 
+import {ShowToastEvent} from 'lightning/platformShowToastEvent';
+
 export default class TransactionComponent extends LightningElement {
 
     theatreOptions = [];
@@ -21,6 +23,8 @@ export default class TransactionComponent extends LightningElement {
     numberOfTickets;
     email;
     phoneNumber;
+
+    isTransactionSuccessful = false;
 
     //for theatre
     @wire(getTheatre)
@@ -124,12 +128,22 @@ export default class TransactionComponent extends LightningElement {
             PhoneNumber: this.phoneNumber
         };
 
-        try {
-            await createTransaction({ details: details });
-            alert('Transaction created successfully!');
-        } catch (error) {
-            alert('Failed to create transaction.' +(error.body ? error.body.message : error.message) );
-        }
+        createTransaction({ details: details })
+        .then(() => {
+            this.dispatchEvent(new ShowToastEvent({
+                title: 'Success',
+                message: 'Transaction Booked Successfully',
+                variant: 'success'
+            }));
+            this.isTransactionSuccessful = true;
+        }) 
+        .catch ((error) => {
+            this.dispatchEvent(new ShowToastEvent({
+                title: 'Success',
+                message: 'Some error occured: ' +(error.body ? error.body.message : error.message),
+                variant: 'error'
+            }));
+        })
     }
 
     handleFinish(){
@@ -139,6 +153,14 @@ export default class TransactionComponent extends LightningElement {
         this.selectedPatron = null;
         this.numberOfTickets = null;
         this.email = "";
-        this.phoneNumber = "";   
+        this.phoneNumber = ""; 
+        if(this.isTransactionSuccessful){
+            this.dispatchEvent(new ShowToastEvent({
+                title: 'Success',
+                message: 'Thank you for booking!',
+                variant: 'success'
+            }));
+            this.isTransactionSuccessful = false;
+        }  
     }
 }

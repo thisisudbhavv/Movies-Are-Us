@@ -1,0 +1,75 @@
+<template>
+    <lightning-card icon-name="standard:event" title="Movie Booking for Patrons">
+        <lightning-combobox
+          name="theatre"
+          value={selectedTheatre}
+          label="Select Theatre"
+          placeholder="Choose Theatre"
+          options={theatreOptions}
+          onchange={handleTheatre} 
+        ></lightning-combobox>
+
+        <lightning-combobox
+          name="movie"
+          value={selectedMovie}
+          label="Select Movie"
+          placeholder="Choose Movie"
+          options={movieOptions}
+          onchange={handleMovie} 
+        ></lightning-combobox>
+
+        <lightning-combobox
+          name="movieShowing"
+          value={selectedShow}
+          label="Select Movie Showing"
+          placeholder="Choose Show"
+          options={showOptions}
+          onchange={handleShow} 
+        ></lightning-combobox>
+
+        <lightning-combobox
+          name="patron"
+          value={selectedPatron}
+          label="Select Patron"
+          placeholder="Choose Patron"
+          options={patronOptions}
+          onchange={handlePatron} 
+        ></lightning-combobox>
+
+        <lightning-input 
+          type="number"
+          label="Number of Tickets"
+          value={numberOfTickets}
+          onchange={handleNumberofTickets}
+        ></lightning-input>
+
+        <lightning-input 
+          type="email"
+          label="Email for Communication"
+          value={email}
+          onchange={handleEmail}
+          required
+        ></lightning-input>
+
+        <lightning-input 
+          type="tel"
+          label="Mobile Number"
+          pattern="[0-9]{10}"
+          value={phoneNumber}
+          onchange={handleNumber}
+          required
+        ></lightning-input>
+
+        <lightning-button 
+          variant="neutral"
+          label="Confirm" 
+          onclick={handleConfirm} 
+        ></lightning-button>
+
+        <lightning-button 
+          variant="brand"
+          label="Finish" 
+          onclick={handleFinish} 
+        ></lightning-button>
+    </lightning-card>
+</template>

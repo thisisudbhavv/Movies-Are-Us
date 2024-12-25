@@ -1,7 +1,7 @@
 public with sharing class TransactionController {
     
     @AuraEnabled
-    public static String createTransaction(Map<String, Object> details)
+    public static void createTransaction(Map<String, Object> details)
     {
         Transaction__c tnx = new Transaction__c();
         tnx.Show_Time__c = (String) details.get('ShowTime');
@@ -10,10 +10,7 @@ public with sharing class TransactionController {
         tnx.Email_for_Communication__c = (String) details.get('Email');
         tnx.Mobile_Number__c = (String) details.get('PhoneNumber');
 
-        try {
-            insert tnx;
-        } catch (Exception) {
-            
-        }
+
+        insert tnx;
     }
 }

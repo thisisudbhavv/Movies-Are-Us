@@ -11,7 +11,7 @@ public with sharing class TransactionController {
         tnx.Mobile_Number__c = (String) details.get('PhoneNumber');
 
         try {
-            insert txn;
+            insert tnx;
         } catch (Exception) {
             
         }

@@ -27,6 +27,11 @@ export default class TransactionComponent extends LightningElement {
 
     isTransactionSuccessful = false;
 
+    //disabling show until both ids are selected
+    get isShowDisabled(){
+        return !(this.selectedMovie && this.selectedTheatre);
+    }
+
     //for theatre
     @wire(getTheatre)
     wiredTheatreList({ error, data }) {
@@ -169,6 +174,13 @@ export default class TransactionComponent extends LightningElement {
                 variant: 'success'
             }));
             this.isTransactionSuccessful = false;
-        }  
+        } 
+        else{
+            this.dispatchEvent(new ShowToastEvent({
+                title: 'Fields Empty',
+                message: 'Oh! you have to fill details again',
+                variant: 'warning'
+            }));
+        } 
     }
 }

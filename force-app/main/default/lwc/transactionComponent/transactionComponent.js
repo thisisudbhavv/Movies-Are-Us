@@ -142,17 +142,25 @@ export default class TransactionComponent extends LightningElement {
         };
 
         createTransaction({ details: details })
-        .then(() => {
-            this.dispatchEvent(new ShowToastEvent({
-                title: 'Success',
-                message: 'Transaction Booked Successfully',
-                variant: 'success'
-            }));
-            this.isTransactionSuccessful = true;
+        .then((res) => {
+            if(res.startsWith('Transaction created successfully')){
+                this.dispatchEvent(new ShowToastEvent({
+                    title: 'Success',
+                    message: res,
+                    variant: 'success'
+                }));
+                this.isTransactionSuccessful = true;
+            } else {
+                this.dispatchEvent(new ShowToastEvent({
+                    title: 'Error',
+                    message: res,
+                    variant: 'error'
+                }));
+            }
         }) 
         .catch ((error) => {
             this.dispatchEvent(new ShowToastEvent({
-                title: 'Success',
+                title: 'Error',
                 message: 'Some error occured: ' +(error.body ? error.body.message : error.message),
                 variant: 'error'
             }));

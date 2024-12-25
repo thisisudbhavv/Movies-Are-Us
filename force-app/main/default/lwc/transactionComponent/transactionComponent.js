@@ -3,6 +3,7 @@ import { LightningElement , wire} from 'lwc';
 import getTheatre from '@salesforce/apex/TheatreController.getTheatre';
 import getMovies from '@salesforce/apex/MovieController.getMovies';
 import getShows from '@salesforce/apex/MovieShowController.getShows';
+import getShowsWithFilter from '@salesforce/apex/MovieShowController.getShowsWithFilter';
 import getPatrons from '@salesforce/apex/PatronController.getPatrons';
 
 import createTransaction from '@salesforce/apex/TransactionController.createTransaction';
@@ -39,6 +40,7 @@ export default class TransactionComponent extends LightningElement {
 
     handleTheatre(event) {
         this.selectedTheatre = event.detail.value;
+        this.filterShows();
     }
 
     //for movies
@@ -54,16 +56,22 @@ export default class TransactionComponent extends LightningElement {
 
     handleMovie(event) {
         this.selectedMovie = event.detail.value;
+        this.filterShows();
     }
 
-    //for shows
-    @wire(getShows)
-    wiredShowList({ error, data }) {
-        if (data) {
-            this.showOptions = data.map((show) => ({
-                label: show.Name,
-                value: show.Id, 
-            }));
+    //filter for show
+    filterShows(){
+        if(this.selectedMovie && this.selectedTheatre){
+            getShowsWithFilter({movieId: this.selectedMovie, theatreId: this.selectedTheatre})
+                .then((data)=>{
+                    this.showOptions = data.map((show) => ({
+                        label: show.Name,
+                        value: show.Id
+                    }))
+                })
+        }
+        else{
+            this.showOptions = [];
         }
     }
 
